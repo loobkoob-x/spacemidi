@@ -16,12 +16,12 @@ Each physical axis maps to a MIDI CC:
 
 | Axis | Direction | Default CC |
 |------|-----------|-----------|
-| X | Left / Right | CC 1 (Modulation) |
-| Y | Forward / Backward | CC 7 (Volume) |
-| Z | Up / Down | CC 74 (Filter) |
-| RX | Tilt left / right | CC 10 (Pan) |
-| RY | Tilt forward / backward | CC 71 (Resonance) |
-| RZ | Rotate | CC 91 (Reverb) |
+| X | Left / Right | CC 1 |
+| Y | Forward / Backward | CC 7 |
+| Z | Up / Down | CC 74 |
+| RX | Tilt left / right | CC 10 |
+| RY | Tilt forward / backward | CC 71 |
+| RZ | Rotate | CC 91 |
 | Button 1 | Press | CC 80 |
 | Button 2 | Press | CC 81 |
 
