@@ -1,0 +1,20 @@
+{
+    "midi_output_id": 5,
+    "midi_channel": 0,
+    "max_val": 500,
+    "dead_zone": 20,
+    "lock_ms": 400,
+    "axis_mapping": {
+        "x":  1,
+        "y":  7,
+        "z":  74,
+        "rx": 10,
+        "ry": 71,
+        "rz": 91
+    },
+    "btn_mapping": {
+        "1": 80,
+        "2": 81
+    },
+    "hotkey_toggle_mode": "F9"
+}
