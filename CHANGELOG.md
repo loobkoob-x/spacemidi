@@ -21,6 +21,11 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 - **Optimized polling rate**: increased polling frequency to 1000Hz (1ms) for reduced latency and more responsive tracking.
 - Refactored code.
 
+### Removed
+- requirements.txt: this is now handled by the batch file
+- config.example.json
+- list_ports.py: automatic port mapping is handled by spacemidi.py
+
 ---
 
 ## [1.0.0] - 2026-05-15
