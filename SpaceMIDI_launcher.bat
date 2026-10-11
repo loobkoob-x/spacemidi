@@ -11,7 +11,7 @@ if not exist easyhid (
     echo Downloading from repository...
     echo.
     
-    powershell -Command "Invoke-WebRequest -Uri 'https://github.com' -OutFile 'easyhid.zip'"
+    powershell -Command "Invoke-WebRequest -Uri 'https://github.com/ahtn/python-easyhid/archive/refs/heads/master.zip' -OutFile 'easyhid.zip'"
     powershell -Command "Expand-Archive -Path 'easyhid.zip' -DestinationPath '.'"
     
     move python-easyhid-master\easyhid . >nul
@@ -31,10 +31,10 @@ if not exist hidapi.dll (
     echo Downloading x64 binary from libusb release assets...
     echo.
     
-    powershell -Command "Invoke-WebRequest -Uri 'https://github.com' -OutFile 'hidapi_download.zip'"
+    powershell -Command "Invoke-WebRequest -Uri 'https://github.com/libusb/hidapi/releases/download/hidapi-0.15.0/hidapi-win.zip' -OutFile 'hidapi_download.zip'"
     powershell -Command "Expand-Archive -Path 'hidapi_download.zip' -DestinationPath 'hidapi_extracted'"
     
-    move hidapi_extracted\hidapi-win\x64\hidapi.dll . >nul
+    move hidapi_extracted\x64\hidapi.dll . >nul
     rmdir /s /q hidapi_extracted
     del hidapi_download.zip
     echo [^+] 'hidapi.dll' driver installed.
