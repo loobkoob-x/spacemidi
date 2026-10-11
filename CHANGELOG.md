@@ -19,6 +19,7 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ### Changed
 - **Optimized polling rate**: increased polling frequency to 1000Hz (1ms) for reduced latency and more responsive tracking.
+- Refactored code.
 
 ---
 
