@@ -1,13 +1,33 @@
 {
-    "midi_output_id": 5,
+    "vendor_id": "0x046d",
+    "product_id": "0xc626",
     "midi_channel": 0,
     "max_val": 500,
     "dead_zone": 20,
     "lock_ms": 400,
+    "hotkey_mapping_mode": "F9",
+    "hotkey_latch_mode": "F10",
+    "latch_sensitivity": 10,
+    "axis_sensitivity": {
+        "x": 10,
+        "y": 10,
+        "z": 5,
+        "rx": 8,
+        "ry": 8,
+        "rz": 4
+    },
+    "axis_modes": {
+        "x": "spring",
+        "y": "spring",
+        "z": "spring",
+        "rx": "latch",
+        "ry": "latch",
+        "rz": "latch"
+    },
     "axis_mapping": {
-        "x":  1,
-        "y":  7,
-        "z":  74,
+        "x": 1,
+        "y": 7,
+        "z": 74,
         "rx": 10,
         "ry": 71,
         "rz": 91
@@ -15,6 +35,5 @@
     "btn_mapping": {
         "1": 80,
         "2": 81
-    },
-    "hotkey_toggle_mode": "F9"
+    }
 }
