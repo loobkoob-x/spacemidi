@@ -2,30 +2,51 @@
 title SpaceMIDI Master Launcher
 setlocal enabledelayedexpansion
 
-:: Check if the local easyhid manual folder dependency is missing
+:: 1. check easyhid dependency
 if not exist easyhid (
     echo =======================================================
-    echo          CRITICAL ACCESSIBILITY ERROR
+    echo          INSTALLING EASYHID LOCAL DEPENDENCY
     echo =======================================================
-    echo [!] Local dependency directory 'easyhid' is missing.
-    echo Opening target source repository for archive download...
+    echo [!] 'easyhid' folder is missing from the directory.
+    echo Downloading from repository...
     echo.
-    echo ACTION REQUIRED: 
-    echo 1. Download the ZIP file from the browser page.
-    echo 2. Extract and place the 'easyhid' folder inside this folder layout.
-    echo.
-    start https://github.com
-    pause
-    exit
+    
+    powershell -Command "Invoke-WebRequest -Uri 'https://github.com' -OutFile 'easyhid.zip'"
+    powershell -Command "Expand-Archive -Path 'easyhid.zip' -DestinationPath '.'"
+    
+    move python-easyhid-master\easyhid . >nul
+    rmdir /s /q python-easyhid-master
+    del easyhid.zip
+    echo [^+] 'easyhid' installed.
+    timeout /t 2 >nul
+    cls
 )
 
-:: AUTOMATED BACKGROUND LAUNCH FOR LOOPMIDI
+:: 2. check hidapi driver
+if not exist hidapi.dll (
+    echo =======================================================
+    echo          INSTALLING HIDAPI WINDOWS DRIVER
+    echo =======================================================
+    echo [!] 'hidapi.dll' driver is missing from the directory.
+    echo Downloading x64 binary from libusb release assets...
+    echo.
+    
+    powershell -Command "Invoke-WebRequest -Uri 'https://github.com' -OutFile 'hidapi_download.zip'"
+    powershell -Command "Expand-Archive -Path 'hidapi_download.zip' -DestinationPath 'hidapi_extracted'"
+    
+    move hidapi_extracted\hidapi-win\x64\hidapi.dll . >nul
+    rmdir /s /q hidapi_extracted
+    del hidapi_download.zip
+    echo [^+] 'hidapi.dll' driver installed.
+    timeout /t 2 >nul
+    cls
+)
+
+:: 3. check loopMIDI process status
 echo Checking loopMIDI background status...
 tasklist /FI "IMAGENAME eq loopmidi.exe" 2>NUL | find /I /N "loopmidi.exe">NUL
 if "%errorlevel%"=="1" (
     echo [!] loopMIDI is not running. Initiating auto-launch...
-    
-    :: Search standard installation paths for loopMIDI
     if exist "%ProgramFiles(x86)%\Tobias Erichsen\loopMIDI\loopmidi.exe" (
         start "" "%ProgramFiles(x86)%\Tobias Erichsen\loopMIDI\loopmidi.exe"
         timeout /t 2 >nul
@@ -34,19 +55,20 @@ if "%errorlevel%"=="1" (
         timeout /t 2 >nul
     ) else (
         echo [!] WARNING: loopMIDI.exe could not be located in standard paths.
-        echo Please ensure loopMIDI is installed and open manually.
+        echo Opening download portal for manual installation setup...
+        start https://tobias-erichsen.de/software/loopmidi.html
+        pause
     )
 ) else (
     echo [^+] loopMIDI background engine verified active.
 )
 
-:: Determine if a first-time installation environment is required on this PC
+:: 4. check python virtual environment
 if not exist venv (
     echo =======================================================
-    echo          FIRST-TIME SYSTEM ENV SETUP DETECTED
+    echo          INITIALIZING PYTHON VIRTUAL ENVIRONMENT
     echo =======================================================
     
-    :: Check if Python is installed on the computer system path
     python --version >nul 2>&1
     if !errorlevel! neq 0 (
         echo [!] WARNING: Python is not detected on this system.
@@ -60,21 +82,6 @@ if not exist venv (
     
     :start_venv_build
     echo [^+] Python Installation Detected.
-    
-    echo -------------------------------------------------------
-    echo loopMIDI verification required. 
-    echo If loopMIDI is not installed, press [Y] to fetch it.
-    echo If it is already installed, press [N] to continue setup.
-    echo -------------------------------------------------------
-    set /p choice="Launch loopMIDI download portal? (Y/N): "
-    if /i "!choice!"=="Y" (
-        start https://tobias-erichsen.de
-        echo.
-        echo [!] Install loopMIDI, create a port named 'SpaceMIDI', then return here.
-        pause
-    )
-
-    echo.
     echo Building clean environment matrix...
     py -3.13 -m venv venv
     
@@ -82,28 +89,16 @@ if not exist venv (
     call venv\Scripts\activate
     pip install mido pygame keyboard cffi
     
-    echo.
-    if exist hidapi.dll (
-        echo Injecting driver hooks...
-        copy hidapi.dll venv\Scripts\ >nul
-        echo [^+] Driver deployment successful.
-    ) else (
-        echo [!] CRITICAL ERROR: hidapi.dll missing from root directory.
-        echo Opening libusb binary driver hub for download...
-        echo.
-        echo ACTION REQUIRED: Download 'hidapi-win.zip', extract 'x64/hidapi.dll',
-        echo and drop it right into this main folder layout.
-        start https://github.com
-        pause
-        exit
-    )
+    echo Injecting driver hooks into target environment execution path...
+    copy hidapi.dll venv\Scripts\ >nul
+    
     echo =======================================================
     echo            SETUP COMPLETE - INITIALISING APP
     echo =======================================================
     timeout /t 3 >nul
 )
 
-:: If the environment matrix is present, execute the controller interface instantly
+:: 5. start interface application
 cls
 call venv\Scripts\activate
 python spacemidi.py
