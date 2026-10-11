@@ -1,7 +1,7 @@
-CHANGELOG          export-ignore
+CHANGELOG.md       export-ignore
 LICENSE            export-ignore
 .gitignore         export-ignore
-CONTRIBUTING       export-ignore
+CONTRIBUTING.md    export-ignore
 README.md          export-ignore
 .gitignore         export-ignore
 .gitattributes     export-ignore
